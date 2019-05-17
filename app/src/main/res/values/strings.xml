@@ -13,4 +13,12 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_schedule">Schedule</string>
+    <string name="menu_submission">Submission</string>
+    <string name="hint_email">Enter your email</string>
+    <string name="dummy">Lorem ipsum dolor sit amet consectuer. Lorem ipsum dolor sit amet consectuer. Lorem ipsum dolor sit amet consectuer.</string>
+    <string name="hint_password">Type your password</string>
+    <string name="estetic_overview">Overview</string>
+    <string name="students">Students</string>
 </resources>
