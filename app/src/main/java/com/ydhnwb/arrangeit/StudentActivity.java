@@ -1,6 +1,7 @@
 package com.ydhnwb.arrangeit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,8 @@ public class StudentActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private FastScrollRecyclerView recyclerView;
-
+    private ProgressBar progressBar;
+    private ValueEventListener listener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +53,10 @@ public class StudentActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            public void onClick(View view) {
+                Intent intent = new Intent(StudentActivity.this, StudentFlowActivity.class);
+                intent.putExtra("ISNEW", true);
+                startActivity(intent);
             }
         });
     }
@@ -64,16 +70,20 @@ public class StudentActivity extends AppCompatActivity {
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    //doSearch()
-                    return false;
+                    return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     //donothing or search immediately
-                    return false;
+                    Toast.makeText(StudentActivity.this, newText, Toast.LENGTH_SHORT).show();
+                    searchByName(newText);
+                    return true;
                 }
             });
+            if(sv.isIconified()){
+               fetchData(true);
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -96,31 +106,38 @@ public class StudentActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_student);
         recyclerView.setLayoutManager(new LinearLayoutManager(StudentActivity.this));
         firebaseDatabase = FirebaseDatabase.getInstance();
+        progressBar = findViewById(R.id.progressbar);
     }
 
     private void fetchData(Boolean b){
-        ValueEventListener listener = new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(View.VISIBLE);
                 studentList.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
                         StudentModel s = ds.getValue(StudentModel.class);
                         studentList.add(s);
-                        recyclerView.setAdapter(new StudentAdapter(studentList, StudentActivity.this));
                     }
+                    recyclerView.setAdapter(new StudentAdapter(studentList, StudentActivity.this));
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Log.d("ydhnwb", databaseError.getMessage());
                 Toast.makeText(StudentActivity.this, "Error when getting data", Toast.LENGTH_SHORT).show();
             }
         };
 
         databaseReference = firebaseDatabase.getReference(Constants.REF_STUDENTS);
-        if(b){ databaseReference.addValueEventListener(listener);
-        }else{ databaseReference.removeEventListener(listener); }
+        if(b){
+            databaseReference.orderByChild("name_idiomatic").addValueEventListener(listener);
+        }else{
+            databaseReference.removeEventListener(listener);
+        }
     }
 
     @Override
@@ -133,5 +150,27 @@ public class StudentActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         fetchData(false);
+    }
+
+    private void searchByName(String s){
+        studentList.clear();
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        StudentModel s = ds.getValue(StudentModel.class);
+                        studentList.add(s);
+                    }
+                    recyclerView.setAdapter(new StudentAdapter(studentList, StudentActivity.this));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("ydhnwb", databaseError.getMessage());
+            }
+        };
+        databaseReference.orderByChild("name_idiomatic").startAt(s).endAt(s+"\uf8ff").addListenerForSingleValueEvent(listener);
     }
 }

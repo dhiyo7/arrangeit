@@ -8,6 +8,7 @@
     tools:context=".StudentActivity"
     tools:showIn="@layout/activity_student">
 
+
     <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
         app:fastScrollPopupBgColor="@color/colorAccent"
         app:fastScrollPopupTextColor="@android:color/primary_text_dark"
@@ -19,6 +20,15 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/rv_student">
-
     </com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView>
+
+    <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/progressbar"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.ydhnwb.arrangeit.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.ydhnwb.arrangeit.R;
+import com.ydhnwb.arrangeit.StudentFlowActivity;
 import com.ydhnwb.arrangeit.models.StudentModel;
 import java.util.List;
 
@@ -54,7 +56,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, student.getName()+" tapped", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, StudentFlowActivity.class);
+                    intent.putExtra("STUDENT", student);
+                    intent.putExtra("ISNEW", false);
+                    context.startActivity(intent);
+                    //Toast.makeText(context, student.getName()+" tapped", Toast.LENGTH_SHORT).show();
                 }
             });
         }

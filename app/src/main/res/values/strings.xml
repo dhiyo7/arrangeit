@@ -23,4 +23,18 @@
     <string name="students">Students</string>
     <string name="title_activity_student">Students</string>
     <string name="search">Search</string>
+    <string name="title_activity_student_flow">Create or edit</string>
+    <string name="hint_name">Insert name</string>
+    <string name="hint_nim">Carefully type the NIM</string>
+    <string name="hint_email_">Type student email</string>
+    <string-array name="semester">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
 </resources>

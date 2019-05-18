@@ -21,17 +21,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.Menu;
+import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
+    private ActionBarDrawerToggle toggle;
     private FloatingActionButton fab;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    private Fragment fragment;
     private static boolean openFirst = true;
     private static int navStatus = -1;
-    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,31 +74,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         int id = item.getItemId();
-        switch (id){
-            case R.id.nav_dashboard :
-                if(navStatus == 0 && !openFirst){
-                    drawer.closeDrawer(GravityCompat.START);
-                }else{
-                    navStatus = 0;
-                    openFirst = false;
-                    fragment = new DashboardFragment();
-                }
-            case R.id.nav_schedule :
-                if(navStatus == 1 && !openFirst){
-                    drawer.closeDrawer(GravityCompat.START);
-                }else{
-                    navStatus = 1;
-                    openFirst = false;
-                    fragment = new ScheduleFragment();
-                }
-            default:
+        if(id == R.id.nav_dashboard){
+            if(navStatus == 0 && !openFirst){ drawer.closeDrawer(GravityCompat.START);
+            }else{
                 navStatus = 0;
                 openFirst = false;
                 fragment = new DashboardFragment();
+            }
+        }else if(id == R.id.nav_schedule){
+            if(navStatus == 1 && !openFirst){ drawer.closeDrawer(GravityCompat.START);
+            }else{
+                navStatus = 1;
+                openFirst = false;
+                fragment = new ScheduleFragment();
+            }
+        }else{
+            navStatus = 0;
+            openFirst = false;
+            fragment = new DashboardFragment();
         }
         if(fragment != null){
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
