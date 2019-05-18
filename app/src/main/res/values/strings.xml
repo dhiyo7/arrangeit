@@ -21,4 +21,6 @@
     <string name="hint_password">Type your password</string>
     <string name="estetic_overview">Overview</string>
     <string name="students">Students</string>
+    <string name="title_activity_student">Students</string>
+    <string name="search">Search</string>
 </resources>

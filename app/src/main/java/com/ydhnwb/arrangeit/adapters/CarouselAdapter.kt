@@ -1,12 +1,14 @@
 package com.ydhnwb.arrangeit.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.ydhnwb.arrangeit.R
+import com.ydhnwb.arrangeit.StudentActivity
 import com.ydhnwb.arrangeit.models.CarouselModel
 import kotlinx.android.synthetic.main.list_item_overview.view.*
 
@@ -15,7 +17,7 @@ class CarouselAdapter(private var mList : List<CarouselModel>, private var conte
 
     override fun getItemCount() = mList.size
 
-    override fun onBindViewHolder(holder: CarouselAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding(mList[position], context)
     }
 
@@ -24,7 +26,7 @@ class CarouselAdapter(private var mList : List<CarouselModel>, private var conte
             itemView.tv_title.text = model.title
             itemView.setOnClickListener {
                 if(model.target == 0){
-                    Toast.makeText(context, "Students", Toast.LENGTH_SHORT).show() ;
+                    context.startActivity(Intent(context, StudentActivity::class.java))
                 }else if (model.target == 1){
                     Toast.makeText(context, "Lecturer", Toast.LENGTH_SHORT).show() ;
                 }else if(model.target == 2){

@@ -42,8 +42,10 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:4.3.2'
     //ui library
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-    compile "androidx.core:core-ktx:+"
+    implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //utils
+    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.0'
 }
 repositories {
     mavenCentral()

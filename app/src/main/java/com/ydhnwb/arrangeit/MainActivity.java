@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser firebaseUser;
     private static boolean openFirst = true;
     private static int navStatus = -1;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Fragment fragment;
         switch (id){
             case R.id.nav_dashboard :
                 if(navStatus == 0 && !openFirst){
