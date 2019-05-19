@@ -64,26 +64,25 @@ public class StudentActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_student,menu);
-        MenuItem searchItem = menu.findItem(R.menu.menu_student);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
         if(searchItem != null){
             SearchView sv = (SearchView) searchItem.getActionView();
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+                    searchByName(querytoLowerCase());
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     //donothing or search immediately
-                    Toast.makeText(StudentActivity.this, newText, Toast.LENGTH_SHORT).show();
-                    searchByName(newText);
+                    if(newText.length() == 0){
+                        fetchData(true);
+                    }
                     return true;
                 }
             });
-            if(sv.isIconified()){
-               fetchData(true);
-            }
         }
         return super.onCreateOptionsMenu(menu);
     }
