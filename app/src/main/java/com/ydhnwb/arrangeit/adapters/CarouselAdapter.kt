@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.ydhnwb.arrangeit.LecturerActivity
 import com.ydhnwb.arrangeit.R
 import com.ydhnwb.arrangeit.StudentActivity
 import com.ydhnwb.arrangeit.models.CarouselModel
@@ -28,7 +29,7 @@ class CarouselAdapter(private var mList : List<CarouselModel>, private var conte
                 if(model.target == 0){
                     context.startActivity(Intent(context, StudentActivity::class.java))
                 }else if (model.target == 1){
-                    Toast.makeText(context, "Lecturer", Toast.LENGTH_SHORT).show() ;
+                    context.startActivity(Intent(context, LecturerActivity::class.java))
                 }else if(model.target == 2){
                     Toast.makeText(context, "Rooms", Toast.LENGTH_SHORT).show() ;
                 }else{

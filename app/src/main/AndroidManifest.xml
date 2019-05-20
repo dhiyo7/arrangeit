@@ -12,9 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".LecturerFlowActivity"
+            android:label="@string/title_activity_lecturer_flow"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".LecturerActivity"
+            android:label="@string/title_activity_lecturer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".StudentFlowActivity"
             android:label="@string/title_activity_student_flow"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StudentActivity"
             android:label="@string/title_activity_student"

@@ -37,9 +37,9 @@ public class DashboardFragment extends Fragment {
         lm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(lm);
         mList.add(new CarouselModel("Students", 0));
-        mList.add(new CarouselModel("Lecturer", 1));
+        mList.add(new CarouselModel("Lecturers", 1));
         mList.add(new CarouselModel("Rooms", 2));
-        mList.add(new CarouselModel("Others", 3));
+        mList.add(new CarouselModel("Classes", 3));
         recyclerView.setAdapter(new CarouselAdapter(mList, getActivity()));
     }
 }

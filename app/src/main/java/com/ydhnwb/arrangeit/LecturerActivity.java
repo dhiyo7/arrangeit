@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
-import com.ydhnwb.arrangeit.adapters.StudentAdapter;
-import com.ydhnwb.arrangeit.models.StudentModel;
+import com.ydhnwb.arrangeit.adapters.LecturerAdapter;
+import com.ydhnwb.arrangeit.models.LecturerModel;
 import com.ydhnwb.arrangeit.utilities.Constants;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,22 +23,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentActivity extends AppCompatActivity {
-    private List<StudentModel> studentList = new ArrayList<>();
+public class LecturerActivity extends AppCompatActivity {
+    private List<LecturerModel> lecturerList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private FastScrollRecyclerView recyclerView;
-    private ProgressBar progressBar;
     private ValueEventListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student);
+        setContentView(R.layout.activity_lecturer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -54,20 +52,20 @@ public class StudentActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StudentActivity.this, StudentFlowActivity.class);
-                intent.putExtra("ISNEW", true);
-                startActivity(intent);
+                Intent i = new Intent(LecturerActivity.this, LecturerFlowActivity.class);
+                i.putExtra("ISNEW", true);
+                startActivity(i);
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_student,menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        if(searchItem != null){
-            SearchView sv = (SearchView) searchItem.getActionView();
-            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        getMenuInflater().inflate(R.menu.menu_lecturer, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        if(menuItem != null){
+            SearchView searchView = (SearchView) menuItem.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     searchByName(query.toLowerCase());
@@ -76,7 +74,6 @@ public class StudentActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    //donothing or search immediately
                     if(newText.length() == 0){
                         fetchData(true);
                     }
@@ -87,10 +84,10 @@ public class StudentActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public void onBackPressed() {
-        hideKeyboard();
-        super.onBackPressed();
+    private void initComponents(){
+        recyclerView = findViewById(R.id.rv_lecturer);
+        recyclerView.setLayoutManager(new LinearLayoutManager(LecturerActivity.this));
+        firebaseDatabase  = FirebaseDatabase.getInstance();
     }
 
     private void hideKeyboard(){
@@ -101,37 +98,28 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
-    private void initComponents(){
-        recyclerView = findViewById(R.id.rv_student);
-        recyclerView.setLayoutManager(new LinearLayoutManager(StudentActivity.this));
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        progressBar = findViewById(R.id.progressbar);
-    }
 
     private void fetchData(Boolean b){
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                progressBar.setVisibility(View.VISIBLE);
-                studentList.clear();
+                lecturerList.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
-                        StudentModel s = ds.getValue(StudentModel.class);
-                        studentList.add(s);
+                        LecturerModel lecturer = ds.getValue(LecturerModel.class);
+                        lecturerList.add(lecturer);
                     }
-                    recyclerView.setAdapter(new StudentAdapter(studentList, StudentActivity.this));
                 }
-                progressBar.setVisibility(View.INVISIBLE);
+                recyclerView.setAdapter(new LecturerAdapter(lecturerList, LecturerActivity.this));
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                progressBar.setVisibility(View.INVISIBLE);
                 Log.d("ydhnwb", databaseError.getMessage());
-                Toast.makeText(StudentActivity.this, "Error when getting data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LecturerActivity.this, "Cannot fetch data from server", Toast.LENGTH_SHORT).show();
             }
         };
-
-        databaseReference = firebaseDatabase.getReference(Constants.REF_STUDENTS);
+        databaseReference = firebaseDatabase.getReference(Constants.REF_LECTURER);
         if(b){
             databaseReference.orderByChild("name_idiomatic").addValueEventListener(listener);
         }else{
@@ -151,17 +139,23 @@ public class StudentActivity extends AppCompatActivity {
         fetchData(false);
     }
 
-    private void searchByName(String s){
-        studentList.clear();
+    @Override
+    public void onBackPressed() {
+        hideKeyboard();
+        super.onBackPressed();
+    }
+
+    private void searchByName(String query){
+        lecturerList.clear();
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
-                        StudentModel s = ds.getValue(StudentModel.class);
-                        studentList.add(s);
+                        LecturerModel l = ds.getValue(LecturerModel.class);
+                        lecturerList.add(l);
                     }
-                    recyclerView.setAdapter(new StudentAdapter(studentList, StudentActivity.this));
+                    recyclerView.setAdapter(new LecturerAdapter(lecturerList, LecturerActivity.this));
                 }
             }
 
@@ -170,6 +164,6 @@ public class StudentActivity extends AppCompatActivity {
                 Log.d("ydhnwb", databaseError.getMessage());
             }
         };
-        databaseReference.orderByChild("name_idiomatic").startAt(s).endAt(s+"\uf8ff").addListenerForSingleValueEvent(listener);
+        databaseReference.orderByChild("name_idiomatic").startAt(query).endAt(query+"\uf8ff").addListenerForSingleValueEvent(listener);
     }
 }

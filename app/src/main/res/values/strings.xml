@@ -37,4 +37,8 @@
         <item>7</item>
         <item>8</item>
     </string-array>
+    <string name="title_activity_lecturer">Lecturers</string>
+    <string name="title_activity_lecturer_flow">Create or edit</string>
+    <string name="hint_nipy">Carefully type nipy</string>
+    <string name="hint_email_lecturer">Enter lecturer email</string>
 </resources>
