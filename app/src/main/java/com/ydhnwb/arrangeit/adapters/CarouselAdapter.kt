@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.ydhnwb.arrangeit.LecturerActivity
-import com.ydhnwb.arrangeit.R
-import com.ydhnwb.arrangeit.RoomActivity
-import com.ydhnwb.arrangeit.StudentActivity
+import com.ydhnwb.arrangeit.*
 import com.ydhnwb.arrangeit.models.CarouselModel
 import kotlinx.android.synthetic.main.list_item_overview.view.*
 
@@ -34,7 +31,7 @@ class CarouselAdapter(private var mList : List<CarouselModel>, private var conte
                 }else if(model.target == 2){
                     context.startActivity(Intent(context, RoomActivity::class.java))
                 }else{
-                    Toast.makeText(context, "Others", Toast.LENGTH_SHORT).show() ;
+                    context.startActivity(Intent(context, CourseActivity::class.java))
                 }
             }
         }
