@@ -41,4 +41,10 @@
     <string name="title_activity_lecturer_flow">Create or edit</string>
     <string name="hint_nipy">Carefully type nipy</string>
     <string name="hint_email_lecturer">Enter lecturer email</string>
+    <string name="title_activity_room">Rooms</string>
+    <string name="title_activity_room_flow">Create or edit</string>
+    <string name="hint_desc">Write some short description</string>
+    <string name="title_activity_course">Courses</string>
+    <string name="title_activity_course_flow">Create or edit</string>
+    <string name="hint_code">Insert the code of this course</string>
 </resources>

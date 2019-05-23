@@ -39,7 +39,7 @@ public class DashboardFragment extends Fragment {
         mList.add(new CarouselModel("Students", 0));
         mList.add(new CarouselModel("Lecturers", 1));
         mList.add(new CarouselModel("Rooms", 2));
-        mList.add(new CarouselModel("Classes", 3));
+        mList.add(new CarouselModel("Courses", 3));
         recyclerView.setAdapter(new CarouselAdapter(mList, getActivity()));
     }
 }
